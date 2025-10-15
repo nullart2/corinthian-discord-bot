@@ -1,2 +1,2 @@
-another discord bot
+another discord translator bot
 
