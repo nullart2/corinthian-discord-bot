@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "discord.js": "^14.23.2",
+    "dotenv": "^17.2.3",
+    "translate-google-api": "^1.0.4"
+  }
+}
