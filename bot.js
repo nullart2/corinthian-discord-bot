@@ -125,7 +125,7 @@ client.on('interactionCreate', async (interaction) => {
   if (interaction.commandName === 'Translate to English') targetLang = 'en';
   else if (interaction.commandName === 'Translate to Spanish') targetLang = 'es';
   else if (interaction.commandName === 'Translate to French') targetLang = 'fr';
-  else if (interaction.commandName === 'Translate to Japanese') targetLang = 'ja';
+  else if (interaction.commandName === 'Translate to Korean') targetLang = 'ko';
 
   if (!targetMessage.content) {
     return interaction.reply({ content: '❌ This message has no text to translate!', ephemeral: true });
