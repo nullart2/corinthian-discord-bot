@@ -163,13 +163,21 @@ client.on('interactionCreate', async (interaction) => {
 
 // Handle reaction-based translation
 client.on('messageReactionAdd', async (reaction, user) => {
+  console.log('=== Reaction Event Triggered ===');
+  console.log('User:', user.tag);
+  console.log('User is bot:', user.bot);
+  
   // Ignore bot reactions
-  if (user.bot) return;
+  if (user.bot) {
+    console.log('Ignoring bot reaction');
+    return;
+  }
 
   // Fetch partial reactions and messages
   if (reaction.partial) {
     try {
       await reaction.fetch();
+      console.log('Fetched partial reaction');
     } catch (error) {
       console.error('Error fetching reaction:', error);
       return;
@@ -179,6 +187,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
   if (reaction.message.partial) {
     try {
       await reaction.message.fetch();
+      console.log('Fetched partial message');
     } catch (error) {
       console.error('Error fetching message:', error);
       return;
@@ -186,12 +195,18 @@ client.on('messageReactionAdd', async (reaction, user) => {
   }
 
   const emoji = reaction.emoji.name;
+  console.log('Emoji name:', emoji);
+  console.log('Emoji ID:', reaction.emoji.id);
+  console.log('Is custom emoji:', !!reaction.emoji.id);
+  
   const targetLang = flagToLang[emoji];
-
-  console.log(`Reaction detected: ${emoji}, Lang: ${targetLang}`); // Debug log
+  console.log('Target language:', targetLang);
 
   // Check if the reaction is a flag emoji we support
-  if (!targetLang) return;
+  if (!targetLang) {
+    console.log('Emoji not in mapping, ignoring');
+    return;
+  }
 
   const message = reaction.message;
 
@@ -201,7 +216,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
     return;
   }
 
+  console.log('Message content:', message.content.substring(0, 50) + '...');
+
   try {
+    console.log('Starting translation...');
     const result = await translate(message.content, { to: targetLang });
     const translatedText = result[0];
     const detectedLang = result[1];
@@ -223,9 +241,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
       .setTimestamp();
 
     await message.reply({ embeds: [embed] });
-    console.log(`Translation successful: ${detectedLang} -> ${targetLang}`);
+    console.log(`✅ Translation successful: ${detectedLang} -> ${targetLang}`);
   } catch (error) {
-    console.error('Translation error:', error);
+    console.error('❌ Translation error:', error);
     // Optionally send error message to user
     try {
       await message.reply(`❌ Translation failed: ${error.message}`);
