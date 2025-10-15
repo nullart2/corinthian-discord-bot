@@ -1,5 +1,8 @@
 
 require('dotenv').config();
+console.log('Token exists:', !!process.env.DISCORD_BOT_TOKEN);
+console.log('Token starts with:', process.env.DISCORD_BOT_TOKEN?.substring(0, 20) + '...');
+
 const { Client, GatewayIntentBits, EmbedBuilder, ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
 const translate = require('translate-google-api');
 
