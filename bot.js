@@ -296,5 +296,5 @@ client.on('messageCreate', async (message) => {
 });
 
 // Login to Discord
-echo "token: "+process.env.DISCORD_BOT_TOKEN;
+console.log("token: ",process.env.DISCORD_BOT_TOKEN);
 client.login(process.env.DISCORD_BOT_TOKEN);
