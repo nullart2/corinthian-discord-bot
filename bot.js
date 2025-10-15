@@ -18,8 +18,9 @@ const client = new Client({
 
 const PREFIX = '!';
 
-// Flag emoji to language code mapping
+// Flag emoji to language code mapping (supports both Unicode and Discord emoji names)
 const flagToLang = {
+  // Unicode flags
   '🇺🇸': 'en', '🇬🇧': 'en', // English
   '🇪🇸': 'es', '🇲🇽': 'es', // Spanish
   '🇫🇷': 'fr', // French
@@ -40,6 +41,28 @@ const flagToLang = {
   '🇻🇳': 'vi', // Vietnamese
   '🇹🇭': 'th', // Thai
   '🇮🇩': 'id', // Indonesian
+  
+  // Discord emoji names (without colons)
+  'flag_us': 'en', 'flag_gb': 'en', 'flag_uk': 'en',
+  'flag_es': 'es', 'flag_mx': 'es',
+  'flag_fr': 'fr',
+  'flag_de': 'de',
+  'flag_it': 'it',
+  'flag_pt': 'pt', 'flag_br': 'pt',
+  'flag_ru': 'ru',
+  'flag_jp': 'ja',
+  'flag_kr': 'ko',
+  'flag_cn': 'zh',
+  'flag_sa': 'ar',
+  'flag_in': 'hi',
+  'flag_ph': 'tl',
+  'flag_nl': 'nl',
+  'flag_se': 'sv',
+  'flag_pl': 'pl',
+  'flag_tr': 'tr',
+  'flag_vn': 'vi',
+  'flag_th': 'th',
+  'flag_id': 'id',
 };
 
 // Language codes mapping
