@@ -110,7 +110,7 @@ client.once('ready', async () => {
     await client.application.commands.set(commands);
     console.log('✅ Context menu commands registered!');
   } catch (error) {
-    console.error('Error registering commands:', error);
+    console.log('Error registering commands:', error);
   }
 });
 
@@ -156,7 +156,7 @@ client.on('interactionCreate', async (interaction) => {
 
     await interaction.editReply({ embeds: [embed] });
   } catch (error) {
-    console.error('Translation error:', error);
+    console.log('Translation error:', error);
     await interaction.editReply({ content: '❌ Translation failed. Please try again.' });
   }
 });
@@ -179,7 +179,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
       await reaction.fetch();
       console.log('Fetched partial reaction');
     } catch (error) {
-      console.error('Error fetching reaction:', error);
+      console.log('Error fetching reaction:', error);
       return;
     }
   }
@@ -189,7 +189,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
       await reaction.message.fetch();
       console.log('Fetched partial message');
     } catch (error) {
-      console.error('Error fetching message:', error);
+      console.log('Error fetching message:', error);
       return;
     }
   }
@@ -243,12 +243,12 @@ client.on('messageReactionAdd', async (reaction, user) => {
     await message.reply({ embeds: [embed] });
     console.log(`✅ Translation successful: ${detectedLang} -> ${targetLang}`);
   } catch (error) {
-    console.error('❌ Translation error:', error);
+    console.log('❌ Translation error:', error);
     // Optionally send error message to user
     try {
       await message.reply(`❌ Translation failed: ${error.message}`);
     } catch (e) {
-      console.error('Failed to send error message:', e);
+      console.log('Failed to send error message:', e);
     }
   }
 });
@@ -294,7 +294,7 @@ client.on('messageCreate', async (message) => {
 
       await message.reply({ embeds: [embed] });
     } catch (error) {
-      console.error('Translation error:', error);
+      console.log('Translation error:', error);
       message.reply('❌ Translation failed. Please check the language code and try again.');
     }
   } else if (command === 'flags') {
@@ -361,11 +361,11 @@ client.on('messageCreate', async (message) => {
 const token = process.env.DISCORD_BOT_TOKEN;
 
 if (!token) {
-  console.error('❌ ERROR: DISCORD_BOT_TOKEN is not set in environment variables!');
+  console.log('❌ ERROR: DISCORD_BOT_TOKEN is not set in environment variables!');
   process.exit(1);
 }
 
 client.login(token).catch(error => {
-  console.error('❌ Failed to login to Discord:', error);
+  console.log('❌ Failed to login to Discord:', error);
   process.exit(1);
 });
