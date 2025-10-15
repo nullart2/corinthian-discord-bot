@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder, ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
 const translate = require('translate-google-api');
@@ -295,4 +296,5 @@ client.on('messageCreate', async (message) => {
 });
 
 // Login to Discord
+echo "token: "+process.env.DISCORD_BOT_TOKEN;
 client.login(process.env.DISCORD_BOT_TOKEN);
