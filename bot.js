@@ -1,9 +1,5 @@
-
 require('dotenv').config();
-console.log('Token exists:', process.env);
-console.log('Token starts with:', process.env.DISCORD_BOT_TOKEN?.substring(0, 20) + '...');
-
-const { Client, GatewayIntentBits, EmbedBuilder, ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, ContextMenuCommandBuilder, ApplicationCommandType, Partials } = require('discord.js');
 const translate = require('translate-google-api');
 
 // Create a new Discord client
@@ -14,6 +10,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMessageReactions,
   ],
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
 const PREFIX = '!';
@@ -169,7 +166,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
   // Ignore bot reactions
   if (user.bot) return;
 
-  // Fetch partial reactions
+  // Fetch partial reactions and messages
   if (reaction.partial) {
     try {
       await reaction.fetch();
@@ -179,8 +176,19 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
   }
 
+  if (reaction.message.partial) {
+    try {
+      await reaction.message.fetch();
+    } catch (error) {
+      console.error('Error fetching message:', error);
+      return;
+    }
+  }
+
   const emoji = reaction.emoji.name;
   const targetLang = flagToLang[emoji];
+
+  console.log(`Reaction detected: ${emoji}, Lang: ${targetLang}`); // Debug log
 
   // Check if the reaction is a flag emoji we support
   if (!targetLang) return;
@@ -188,7 +196,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
   const message = reaction.message;
 
   // Check if message has content
-  if (!message.content) return;
+  if (!message.content) {
+    console.log('Message has no content to translate');
+    return;
+  }
 
   try {
     const result = await translate(message.content, { to: targetLang });
@@ -212,8 +223,15 @@ client.on('messageReactionAdd', async (reaction, user) => {
       .setTimestamp();
 
     await message.reply({ embeds: [embed] });
+    console.log(`Translation successful: ${detectedLang} -> ${targetLang}`);
   } catch (error) {
     console.error('Translation error:', error);
+    // Optionally send error message to user
+    try {
+      await message.reply(`❌ Translation failed: ${error.message}`);
+    } catch (e) {
+      console.error('Failed to send error message:', e);
+    }
   }
 });
 
@@ -322,5 +340,14 @@ client.on('messageCreate', async (message) => {
 });
 
 // Login to Discord
-console.log("token: ",process.env.DISCORD_BOT_TOKEN);
-client.login(process.env.DISCORD_BOT_TOKEN);
+const token = process.env.DISCORD_BOT_TOKEN;
+
+if (!token) {
+  console.error('❌ ERROR: DISCORD_BOT_TOKEN is not set in environment variables!');
+  process.exit(1);
+}
+
+client.login(token).catch(error => {
+  console.error('❌ Failed to login to Discord:', error);
+  process.exit(1);
+});
