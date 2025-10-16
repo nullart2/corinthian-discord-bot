@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder, ContextMenuCommandBuilder, ApplicationCommandType, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, ContextMenuCommandBuilder, ApplicationCommandType, Partials, ActivityType } = require('discord.js');
 const translate = require('translate-google-api');
 
 // Create a new Discord client
@@ -87,8 +87,16 @@ const languageCodes = {
 };
 
 client.once('ready', async () => {
-  console.log(`✅ Bot is online as ${client.user.tag}`);
-  client.user.setActivity('React with flags to translate!', { type: 'WATCHING' });
+  console.error(`✅ Bot is online as ${client.user.tag}`);
+  console.error(`✅ Bot ID: ${client.user.id}`);
+  console.error(`✅ Guilds: ${client.guilds.cache.size}`);
+  
+  try {
+    client.user.setActivity('React with flags to translate!', { type: ActivityType.Watching });
+    console.error('✅ Activity status set');
+  } catch (error) {
+    console.error('⚠️ Error setting activity:', error);
+  }
 
   // Register context menu commands
   const commands = [
@@ -107,17 +115,20 @@ client.once('ready', async () => {
   ];
 
   try {
+    console.error('📝 Registering context menu commands...');
     await client.application.commands.set(commands);
-    console.log('✅ Context menu commands registered!');
-    console.log(`✅ ${client.user.tag} ready!`);
+    console.error('✅ Context menu commands registered!');
+    console.error(`✅ ${client.user.tag} ready!`);
   } catch (error) {
-    console.log('Error registering commands:', error);
+    console.error('❌ Error registering commands:', error);
   }
 });
 
 // Handle context menu interactions
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isMessageContextMenuCommand()) return;
+
+  console.error(`🔧 Context menu used: ${interaction.commandName} by ${interaction.user.tag}`);
 
   const targetMessage = interaction.targetMessage;
   let targetLang;
@@ -129,6 +140,7 @@ client.on('interactionCreate', async (interaction) => {
   else if (interaction.commandName === 'Translate to Korean') targetLang = 'ko';
 
   if (!targetMessage.content) {
+    console.error('⚠️ Message has no content to translate');
     return interaction.reply({ content: '❌ This message has no text to translate!', ephemeral: true });
   }
 
@@ -143,35 +155,25 @@ client.on('interactionCreate', async (interaction) => {
       .setColor('#0099ff')
       .setTitle('🌐 '+languageCodes[targetLang]+' Translation')
       .setDescription(translatedText)
-      // .addFields(
-      //   // {
-      //   //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-      //   //   value: targetMessage.content.substring(0, 1024),
-      //   // },
-      //   {
-      //     name: `Translated (${languageCodes[targetLang] || targetLang})`,
-      //     value: translatedText.substring(0, 1024),
-      //   }
-      // )
-      // .setFooter({ text: `Requested by ${interaction.user.tag}` })
       .setTimestamp();
 
     await interaction.editReply({ embeds: [embed] });
+    console.error(`✅ Context menu translation: ${detectedLang} -> ${targetLang}`);
   } catch (error) {
-    console.log('Translation error:', error);
+    console.error('❌ Translation error:', error);
     await interaction.editReply({ content: '❌ Translation failed. Please try again.' });
   }
 });
 
 // Handle reaction-based translation
 client.on('messageReactionAdd', async (reaction, user) => {
-  console.log('=== Reaction Event Triggered ===');
-  console.log('User:', user.tag);
-  console.log('User is bot:', user.bot);
+  console.error('=== Reaction Event Triggered ===');
+  console.error('User:', user.tag);
+  console.error('User is bot:', user.bot);
   
   // Ignore bot reactions
   if (user.bot) {
-    console.log('Ignoring bot reaction');
+    console.error('Ignoring bot reaction');
     return;
   }
 
@@ -179,9 +181,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
   if (reaction.partial) {
     try {
       await reaction.fetch();
-      console.log('Fetched partial reaction');
+      console.error('Fetched partial reaction');
     } catch (error) {
-      console.log('Error fetching reaction:', error);
+      console.error('❌ Error fetching reaction:', error);
       return;
     }
   }
@@ -189,24 +191,24 @@ client.on('messageReactionAdd', async (reaction, user) => {
   if (reaction.message.partial) {
     try {
       await reaction.message.fetch();
-      console.log('Fetched partial message');
+      console.error('Fetched partial message');
     } catch (error) {
-      console.log('Error fetching message:', error);
+      console.error('❌ Error fetching message:', error);
       return;
     }
   }
 
   const emoji = reaction.emoji.name;
-  console.log('Emoji name:', emoji);
-  console.log('Emoji ID:', reaction.emoji.id);
-  console.log('Is custom emoji:', !!reaction.emoji.id);
+  console.error('Emoji name:', emoji);
+  console.error('Emoji ID:', reaction.emoji.id);
+  console.error('Is custom emoji:', !!reaction.emoji.id);
   
   const targetLang = flagToLang[emoji];
-  console.log('Target language:', targetLang);
+  console.error('Target language:', targetLang);
 
   // Check if the reaction is a flag emoji we support
   if (!targetLang) {
-    console.log('Emoji not in mapping, ignoring');
+    console.error('Emoji not in mapping, ignoring');
     return;
   }
 
@@ -214,14 +216,14 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
   // Check if message has content
   if (!message.content) {
-    console.log('Message has no content to translate');
+    console.error('Message has no content to translate');
     return;
   }
 
-  console.log('Message content:', message.content.substring(0, 50) + '...');
+  console.error('Message content:', message.content.substring(0, 50) + '...');
 
   try {
-    console.log('Starting translation...');
+    console.error('Starting translation...');
     const result = await translate(message.content, { to: targetLang });
     const translatedText = result[0];
     const detectedLang = result[1];
@@ -230,28 +232,18 @@ client.on('messageReactionAdd', async (reaction, user) => {
       .setColor('#00ff00')
       .setTitle(`🌐 ${languageCodes[targetLang]} Translation via ${emoji}`)
       .setDescription(translatedText)
-      // .addFields(
-      //   // {
-      //   //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-      //   //   value: message.content.substring(0, 1024),
-      //   // },
-      //   {
-      //     name: `Translated (${languageCodes[targetLang] || targetLang})`,
-      //     value: translatedText.substring(0, 1024),
-      //   }
-      // )
-      // .setFooter({ text: `Requested by ${user.tag}` })
       .setTimestamp();
 
     await message.reply({ embeds: [embed] });
-    console.log(`✅ Translation successful: ${detectedLang} -> ${targetLang}`);
+    console.error(`✅ Translation successful: ${detectedLang} -> ${targetLang}`);
   } catch (error) {
-    console.log('❌ Translation error:', error);
+    console.error('❌ Translation error:', error);
+    console.error('❌ Error stack:', error.stack);
     // Optionally send error message to user
     try {
       await message.reply(`❌ Translation failed: ${error.message}`);
     } catch (e) {
-      console.log('Failed to send error message:', e);
+      console.error('❌ Failed to send error message:', e);
     }
   }
 });
@@ -263,6 +255,8 @@ client.on('messageCreate', async (message) => {
 
   const args = message.content.slice(PREFIX.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
+
+  console.error(`📨 Command received: ${command} from ${message.author.tag}`);
 
   if (command === 'translate' || command === 't') {
     if (args.length < 2) {
@@ -283,26 +277,17 @@ client.on('messageCreate', async (message) => {
         .setColor('#0099ff')
         .setTitle('🌐 '+languageCodes[targetLang]+' Translation')
         .setDescription(translatedText)
-        // .addFields(
-        //   // {
-        //   //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-        //   //   value: textToTranslate,
-        //   // },
-        //   {
-        //     name: `Translated (${languageCodes[targetLang] || targetLang})`,
-        //     value: translatedText,
-        //   }
-        // )
-        // .setFooter({ text: `Requested by ${message.author.tag}` })
         .setTimestamp();
 
       await message.reply({ embeds: [embed] });
+      console.error(`✅ Command translation: ${detectedLang} -> ${targetLang}`);
     } catch (error) {
-      console.log('Translation error:', error);
+      console.error('❌ Translation error:', error);
       message.reply('❌ Translation failed. Please check the language code and try again.');
     }
   } else if (command === 'flags') {
     const flagList = Object.entries(flagToLang)
+      .filter(([flag]) => flag.length > 2) // Only show Unicode flags
       .map(([flag, code]) => `${flag} → **${languageCodes[code] || code}**`)
       .join('\n');
 
@@ -361,15 +346,32 @@ client.on('messageCreate', async (message) => {
   }
 });
 
+// Global error handlers
+process.on('unhandledRejection', (error) => {
+  console.error('❌ Unhandled promise rejection:', error);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught exception:', error);
+  process.exit(1);
+});
+
+client.on('error', (error) => {
+  console.error('❌ Discord client error:', error);
+});
+
 // Login to Discord
 const token = process.env.DISCORD_BOT_TOKEN;
 
 if (!token) {
-  console.log('❌ ERROR: DISCORD_BOT_TOKEN is not set in environment variables!');
+  console.error('❌ ERROR: DISCORD_BOT_TOKEN is not set in environment variables!');
   process.exit(1);
 }
 
+console.error('🔄 Attempting to login to Discord...');
+
 client.login(token).catch(error => {
-  console.log('❌ Failed to login to Discord:', error);
+  console.error('❌ Failed to login to Discord:', error);
+  console.error('❌ Error details:', error.stack);
   process.exit(1);
 });
