@@ -142,16 +142,17 @@ client.on('interactionCreate', async (interaction) => {
     const embed = new EmbedBuilder()
       .setColor('#0099ff')
       .setTitle('🌐 '+languageCodes[targetLang]+' Translation')
-      .addFields(
-        // {
-        //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-        //   value: targetMessage.content.substring(0, 1024),
-        // },
-        {
-          name: `Translated (${languageCodes[targetLang] || targetLang})`,
-          value: translatedText.substring(0, 1024),
-        }
-      )
+      .setDescription(translatedText)
+      // .addFields(
+      //   // {
+      //   //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
+      //   //   value: targetMessage.content.substring(0, 1024),
+      //   // },
+      //   {
+      //     name: `Translated (${languageCodes[targetLang] || targetLang})`,
+      //     value: translatedText.substring(0, 1024),
+      //   }
+      // )
       // .setFooter({ text: `Requested by ${interaction.user.tag}` })
       .setTimestamp();
 
@@ -227,18 +228,18 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
     const embed = new EmbedBuilder()
       .setColor('#00ff00')
-      // .setTitle('🌐 '+languageCodes[targetLang]+' Translation via')
       .setTitle(`🌐 ${languageCodes[targetLang]} Translation via ${emoji}`)
-      .addFields(
-        // {
-        //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-        //   value: message.content.substring(0, 1024),
-        // },
-        {
-          name: `Translated (${languageCodes[targetLang] || targetLang})`,
-          value: translatedText.substring(0, 1024),
-        }
-      )
+      .setDescription(translatedText)
+      // .addFields(
+      //   // {
+      //   //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
+      //   //   value: message.content.substring(0, 1024),
+      //   // },
+      //   {
+      //     name: `Translated (${languageCodes[targetLang] || targetLang})`,
+      //     value: translatedText.substring(0, 1024),
+      //   }
+      // )
       // .setFooter({ text: `Requested by ${user.tag}` })
       .setTimestamp();
 
@@ -281,16 +282,17 @@ client.on('messageCreate', async (message) => {
       const embed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle('🌐 '+languageCodes[targetLang]+' Translation')
-        .addFields(
-          // {
-          //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-          //   value: textToTranslate,
-          // },
-          {
-            name: `Translated (${languageCodes[targetLang] || targetLang})`,
-            value: translatedText,
-          }
-        )
+        .setDescription(translatedText)
+        // .addFields(
+        //   // {
+        //   //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
+        //   //   value: textToTranslate,
+        //   // },
+        //   {
+        //     name: `Translated (${languageCodes[targetLang] || targetLang})`,
+        //     value: translatedText,
+        //   }
+        // )
         // .setFooter({ text: `Requested by ${message.author.tag}` })
         .setTimestamp();
 
