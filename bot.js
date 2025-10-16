@@ -102,13 +102,14 @@ client.once('ready', async () => {
       .setName('Translate to French')
       .setType(ApplicationCommandType.Message),
     new ContextMenuCommandBuilder()
-      .setName('Translate to Japanese')
+      .setName('Translate to Korean')
       .setType(ApplicationCommandType.Message),
   ];
 
   try {
     await client.application.commands.set(commands);
     console.log('✅ Context menu commands registered!');
+    console.log(`✅ ${client.user.tag} ready!`);
   } catch (error) {
     console.log('Error registering commands:', error);
   }
@@ -140,18 +141,18 @@ client.on('interactionCreate', async (interaction) => {
 
     const embed = new EmbedBuilder()
       .setColor('#0099ff')
-      .setTitle('🌐 Translation')
+      .setTitle('🌐 '+languageCodes[targetLang]+' Translation')
       .addFields(
+        // {
+        //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
+        //   value: targetMessage.content.substring(0, 1024),
+        // },
         {
-          name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-          value: targetMessage.content.substring(0, 1024),
-        },
-        {
-          name: `Translated (${languageCodes[targetLang] || targetLang})`,
-          value: translatedText.substring(0, 1024),
+          // name: `Translated (${languageCodes[targetLang] || targetLang})`,
+          name: translatedText.substring(0, 1024),
         }
       )
-      .setFooter({ text: `Requested by ${interaction.user.tag}` })
+      // .setFooter({ text: `Requested by ${interaction.user.tag}` })
       .setTimestamp();
 
     await interaction.editReply({ embeds: [embed] });
