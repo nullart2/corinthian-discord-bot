@@ -19,40 +19,117 @@ const PREFIX = '!';
 
 // Flag emoji to language code mapping (supports both Unicode and Discord emoji names)
 const flagToLang = {
-  // Unicode flags
-  '🇺🇸': 'en', '🇬🇧': 'en', // English
-  '🇪🇸': 'es', '🇲🇽': 'es', // Spanish
-  '🇫🇷': 'fr', // French
-  '🇩🇪': 'de', // German
-  '🇮🇹': 'it', // Italian
-  '🇵🇹': 'pt', '🇧🇷': 'pt', // Portuguese
-  '🇷🇺': 'ru', // Russian
+  // Unicode flags - English
+  '🇺🇸': 'en', '🇬🇧': 'en', '🇦🇺': 'en', '🇨🇦': 'en', '🇳🇿': 'en', '🇮🇪': 'en', '🇿🇦': 'en',
+  
+  // Spanish
+  '🇪🇸': 'es', '🇲🇽': 'es', '🇦🇷': 'es', '🇨🇴': 'es', '🇨🇱': 'es', '🇵🇪': 'es', '🇻🇪': 'es',
+  '🇪🇨': 'es', '🇬🇹': 'es', '🇨🇺': 'es', '🇧🇴': 'es', '🇩🇴': 'es', '🇭🇳': 'es', '🇵🇾': 'es',
+  '🇸🇻': 'es', '🇳🇮': 'es', '🇨🇷': 'es', '🇵🇦': 'es', '🇺🇾': 'es', '🇬🇶': 'es',
+  
+  // French
+  '🇫🇷': 'fr', '🇧🇪': 'fr', '🇨🇭': 'fr', '🇨🇦': 'fr', '🇱🇺': 'fr', '🇲🇨': 'fr', '🇭🇹': 'fr',
+  '🇨🇮': 'fr', '🇸🇳': 'fr', '🇲🇱': 'fr', '🇳🇪': 'fr', '🇧🇫': 'fr', '🇹🇩': 'fr', '🇨🇲': 'fr',
+  
+  // German
+  '🇩🇪': 'de', '🇦🇹': 'de', '🇨🇭': 'de', '🇱🇮': 'de', '🇱🇺': 'de',
+  
+  // Portuguese
+  '🇵🇹': 'pt', '🇧🇷': 'pt', '🇦🇴': 'pt', '🇲🇿': 'pt', '🇬🇼': 'pt', '🇹🇱': 'pt',
+  
+  // Italian
+  '🇮🇹': 'it', '🇨🇭': 'it', '🇸🇲': 'it', '🇻🇦': 'it',
+  
+  // Russian
+  '🇷🇺': 'ru', '🇧🇾': 'ru', '🇰🇿': 'ru', '🇰🇬': 'ru',
+  
+  // Arabic
+  '🇸🇦': 'ar', '🇦🇪': 'ar', '🇪🇬': 'ar', '🇮🇶': 'ar', '🇯🇴': 'ar', '🇰🇼': 'ar', '🇱🇧': 'ar',
+  '🇱🇾': 'ar', '🇲🇦': 'ar', '🇴🇲': 'ar', '🇵🇸': 'ar', '🇶🇦': 'ar', '🇸🇾': 'ar', '🇹🇳': 'ar',
+  '🇾🇪': 'ar', '🇧🇭': 'ar', '🇩🇿': 'ar', '🇸🇩': 'ar',
+  
+  // Asian Languages
   '🇯🇵': 'ja', // Japanese
   '🇰🇷': 'ko', // Korean
-  '🇨🇳': 'zh', // Chinese
-  '🇸🇦': 'ar', // Arabic
-  '🇮🇳': 'hi', // Hindi
+  '🇨🇳': 'zh', '🇹🇼': 'zh', '🇭🇰': 'zh', '🇸🇬': 'zh', // Chinese
+  '🇹🇭': 'th', // Thai
+  '🇻🇳': 'vi', // Vietnamese
+  '🇮🇩': 'id', // Indonesian
+  '🇲🇾': 'ms', // Malay
   '🇵🇭': 'tl', // Filipino
+  '🇲🇲': 'my', // Burmese
+  '🇰🇭': 'km', // Khmer
+  '🇱🇦': 'lo', // Lao
+  '🇧🇩': 'bn', // Bengali
+  '🇵🇰': 'ur', // Urdu
+  '🇮🇳': 'hi', // Hindi
+  '🇱🇰': 'si', // Sinhala
+  '🇳🇵': 'ne', // Nepali
+  '🇦🇫': 'ps', // Pashto
+  '🇮🇷': 'fa', // Persian
+  '🇮🇱': 'he', // Hebrew
+  
+  // European Languages
   '🇳🇱': 'nl', // Dutch
   '🇸🇪': 'sv', // Swedish
   '🇵🇱': 'pl', // Polish
   '🇹🇷': 'tr', // Turkish
-  '🇻🇳': 'vi', // Vietnamese
-  '🇹🇭': 'th', // Thai
-  '🇮🇩': 'id', // Indonesian
+  '🇬🇷': 'el', // Greek
+  '🇺🇦': 'uk', // Ukrainian
+  '🇷🇴': 'ro', // Romanian
+  '🇨🇿': 'cs', // Czech
+  '🇭🇺': 'hu', // Hungarian
+  '🇧🇬': 'bg', // Bulgarian
+  '🇷🇸': 'sr', // Serbian
+  '🇭🇷': 'hr', // Croatian
+  '🇸🇰': 'sk', // Slovak
+  '🇸🇮': 'sl', // Slovenian
+  '🇱🇹': 'lt', // Lithuanian
+  '🇱🇻': 'lv', // Latvian
+  '🇪🇪': 'et', // Estonian
+  '🇫🇮': 'fi', // Finnish
+  '🇩🇰': 'da', // Danish
+  '🇳🇴': 'no', // Norwegian
+  '🇮🇸': 'is', // Icelandic
+  '🇦🇱': 'sq', // Albanian
+  '🇲🇰': 'mk', // Macedonian
+  '🇧🇦': 'bs', // Bosnian
+  '🇲🇪': 'sr', // Montenegro (Serbian)
+  '🇽🇰': 'sq', // Kosovo (Albanian)
+  
+  // African Languages
+  '🇿🇦': 'af', // Afrikaans
+  '🇪🇹': 'am', // Amharic
+  '🇰🇪': 'sw', // Swahili
+  '🇹🇿': 'sw', // Swahili
+  '🇺🇬': 'sw', // Swahili
+  '🇳🇬': 'yo', // Yoruba
+  '🇬🇭': 'tw', // Twi
+  '🇿🇼': 'sn', // Shona
+  '🇲🇬': 'mg', // Malagasy
+  '🇸🇴': 'so', // Somali
+  
+  // Other Languages
+  '🇦🇲': 'hy', // Armenian
+  '🇬🇪': 'ka', // Georgian
+  '🇦🇿': 'az', // Azerbaijani
+  '🇲🇳': 'mn', // Mongolian
+  '🇺🇿': 'uz', // Uzbek
+  '🇹🇯': 'tg', // Tajik
+  '🇹🇲': 'tk', // Turkmen
   
   // Discord emoji names (without colons)
-  'flag_us': 'en', 'flag_gb': 'en', 'flag_uk': 'en',
-  'flag_es': 'es', 'flag_mx': 'es',
-  'flag_fr': 'fr',
-  'flag_de': 'de',
+  'flag_us': 'en', 'flag_gb': 'en', 'flag_uk': 'en', 'flag_au': 'en', 'flag_ca': 'en', 'flag_nz': 'en',
+  'flag_es': 'es', 'flag_mx': 'es', 'flag_ar': 'es', 'flag_co': 'es', 'flag_cl': 'es', 'flag_pe': 'es',
+  'flag_fr': 'fr', 'flag_be': 'fr', 'flag_ch': 'fr',
+  'flag_de': 'de', 'flag_at': 'de',
   'flag_it': 'it',
-  'flag_pt': 'pt', 'flag_br': 'pt',
+  'flag_pt': 'pt', 'flag_br': 'pt', 'flag_ao': 'pt',
   'flag_ru': 'ru',
   'flag_jp': 'ja',
   'flag_kr': 'ko',
-  'flag_cn': 'zh',
-  'flag_sa': 'ar',
+  'flag_cn': 'zh', 'flag_tw': 'zh', 'flag_hk': 'zh',
+  'flag_sa': 'ar', 'flag_ae': 'ar', 'flag_eg': 'ar', 'flag_iq': 'ar', 'flag_jo': 'ar',
   'flag_in': 'hi',
   'flag_ph': 'tl',
   'flag_nl': 'nl',
@@ -62,6 +139,15 @@ const flagToLang = {
   'flag_vn': 'vi',
   'flag_th': 'th',
   'flag_id': 'id',
+  'flag_gr': 'el',
+  'flag_ua': 'uk',
+  'flag_ro': 'ro',
+  'flag_cz': 'cs',
+  'flag_hu': 'hu',
+  'flag_pk': 'ur',
+  'flag_bd': 'bn',
+  'flag_il': 'he',
+  'flag_ir': 'fa',
 };
 
 // Language codes mapping
@@ -86,12 +172,62 @@ const languageCodes = {
   vi: 'Vietnamese',
   th: 'Thai',
   id: 'Indonesian',
+  ms: 'Malay',
+  el: 'Greek',
+  uk: 'Ukrainian',
+  ro: 'Romanian',
+  cs: 'Czech',
+  hu: 'Hungarian',
+  bg: 'Bulgarian',
+  sr: 'Serbian',
+  hr: 'Croatian',
+  sk: 'Slovak',
+  sl: 'Slovenian',
+  lt: 'Lithuanian',
+  lv: 'Latvian',
+  et: 'Estonian',
+  fi: 'Finnish',
+  da: 'Danish',
+  no: 'Norwegian',
+  is: 'Icelandic',
+  sq: 'Albanian',
+  mk: 'Macedonian',
+  bs: 'Bosnian',
+  af: 'Afrikaans',
+  am: 'Amharic',
+  sw: 'Swahili',
+  yo: 'Yoruba',
+  tw: 'Twi',
+  sn: 'Shona',
+  mg: 'Malagasy',
+  so: 'Somali',
+  hy: 'Armenian',
+  ka: 'Georgian',
+  az: 'Azerbaijani',
+  mn: 'Mongolian',
+  uz: 'Uzbek',
+  tg: 'Tajik',
+  tk: 'Turkmen',
+  bn: 'Bengali',
+  ur: 'Urdu',
+  si: 'Sinhala',
+  ne: 'Nepali',
+  ps: 'Pashto',
+  fa: 'Persian',
+  he: 'Hebrew',
+  my: 'Burmese',
+  km: 'Khmer',
+  lo: 'Lao',
 };
 
 client.once('ready', async () => {
   console.error(`✅ Bot is online as ${client.user.tag}`);
   console.error(`✅ Bot ID: ${client.user.id}`);
   console.error(`✅ Guilds: ${client.guilds.cache.size}`);
+  
+  // Log intents
+  console.error('✅ Intents configured:', client.options.intents.bitfield);
+  console.error('✅ Partials configured:', client.options.partials);
   
   try {
     client.user.setActivity('React with flags to translate!', { type: ActivityType.Watching });
@@ -170,7 +306,8 @@ client.on('interactionCreate', async (interaction) => {
 // Handle reaction-based translation
 client.on('messageReactionAdd', async (reaction, user) => {
   console.error('=== Reaction Event Triggered ===');
-  console.error('User:', user.tag);
+  console.error('Timestamp:', new Date().toISOString());
+  console.error('User:', user.tag, 'ID:', user.id);
   console.error('User is bot:', user.bot);
   
   // Ignore bot reactions
@@ -179,11 +316,15 @@ client.on('messageReactionAdd', async (reaction, user) => {
     return;
   }
 
+  console.error('Reaction partial:', reaction.partial);
+  console.error('Message partial:', reaction.message.partial);
+
   // Fetch partial reactions and messages
   if (reaction.partial) {
     try {
+      console.error('Attempting to fetch partial reaction...');
       await reaction.fetch();
-      console.error('Fetched partial reaction');
+      console.error('✅ Fetched partial reaction');
     } catch (error) {
       console.error('❌ Error fetching reaction:', error);
       return;
@@ -192,8 +333,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
   if (reaction.message.partial) {
     try {
+      console.error('Attempting to fetch partial message...');
       await reaction.message.fetch();
-      console.error('Fetched partial message');
+      console.error('✅ Fetched partial message');
     } catch (error) {
       console.error('❌ Error fetching message:', error);
       return;
@@ -203,14 +345,18 @@ client.on('messageReactionAdd', async (reaction, user) => {
   const emoji = reaction.emoji.name;
   console.error('Emoji name:', emoji);
   console.error('Emoji ID:', reaction.emoji.id);
+  console.error('Emoji identifier:', reaction.emoji.identifier);
   console.error('Is custom emoji:', !!reaction.emoji.id);
+  console.error('Message ID:', reaction.message.id);
+  console.error('Channel ID:', reaction.message.channel.id);
   
   const targetLang = flagToLang[emoji];
   console.error('Target language:', targetLang);
+  console.error('Available flags:', Object.keys(flagToLang).join(', '));
 
   // Check if the reaction is a flag emoji we support
   if (!targetLang) {
-    console.error('Emoji not in mapping, ignoring');
+    console.error(`❌ Emoji "${emoji}" not in mapping, ignoring`);
     return;
   }
 
@@ -218,17 +364,24 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
   // Check if message has content
   if (!message.content) {
-    console.error('Message has no content to translate');
+    console.error('❌ Message has no content to translate');
+    console.error('Message embeds:', message.embeds.length);
+    console.error('Message attachments:', message.attachments.size);
     return;
   }
 
-  console.error('Message content:', message.content.substring(0, 50) + '...');
+  console.error('✅ Message has content, length:', message.content.length);
+  console.error('Message preview:', message.content.substring(0, 100));
 
   try {
-    console.error('Starting translation...');
+    console.error('🔄 Starting translation...');
     const result = await translate(message.content, { to: targetLang });
     const translatedText = result[0];
     const detectedLang = result[1];
+    
+    console.error('✅ Translation received');
+    console.error('Detected language:', detectedLang);
+    console.error('Translated text length:', translatedText.length);
 
     const embed = new EmbedBuilder()
       .setColor('#00ff00')
@@ -236,6 +389,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
       .setDescription(translatedText)
       .setTimestamp();
 
+    console.error('📤 Sending reply...');
     await message.reply({ embeds: [embed] });
     console.error(`✅ Translation successful: ${detectedLang} -> ${targetLang}`);
   } catch (error) {
