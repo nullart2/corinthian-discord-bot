@@ -226,18 +226,19 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
     const embed = new EmbedBuilder()
       .setColor('#00ff00')
-      .setTitle(`🌐 Translation via ${emoji}`)
+      // .setTitle('🌐 '+languageCodes[targetLang]+' Translation via')
+      .setTitle(`🌐 ${languageCodes[targetLang]} Translation via ${emoji}`)
       .addFields(
+        // {
+        //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
+        //   value: message.content.substring(0, 1024),
+        // },
         {
-          name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-          value: message.content.substring(0, 1024),
-        },
-        {
-          name: `Translated (${languageCodes[targetLang] || targetLang})`,
-          value: translatedText.substring(0, 1024),
+          // name: `Translated (${languageCodes[targetLang] || targetLang})`,
+          name: translatedText.substring(0, 1024),
         }
       )
-      .setFooter({ text: `Requested by ${user.tag}` })
+      // .setFooter({ text: `Requested by ${user.tag}` })
       .setTimestamp();
 
     await message.reply({ embeds: [embed] });
@@ -278,18 +279,18 @@ client.on('messageCreate', async (message) => {
 
       const embed = new EmbedBuilder()
         .setColor('#0099ff')
-        .setTitle('🌐 Translation')
+        .setTitle('🌐 '+languageCodes[targetLang]+' Translation')
         .addFields(
+          // {
+          //   name: `Original (${languageCodes[detectedLang] || detectedLang})`,
+          //   value: textToTranslate,
+          // },
           {
-            name: `Original (${languageCodes[detectedLang] || detectedLang})`,
-            value: textToTranslate,
-          },
-          {
-            name: `Translated (${languageCodes[targetLang] || targetLang})`,
-            value: translatedText,
+            // name: `Translated (${languageCodes[targetLang] || targetLang})`,
+            name: translatedText,
           }
         )
-        .setFooter({ text: `Requested by ${message.author.tag}` })
+        // .setFooter({ text: `Requested by ${message.author.tag}` })
         .setTimestamp();
 
       await message.reply({ embeds: [embed] });
@@ -324,7 +325,7 @@ client.on('messageCreate', async (message) => {
   } else if (command === 'help') {
     const embed = new EmbedBuilder()
       .setColor('#ffaa00')
-      .setTitle('🤖 Translator Bot Help')
+      .setTitle('🤖 Interpreteer')
       .setDescription('Translate text between different languages using Google Translate.')
       .addFields(
         {
