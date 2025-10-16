@@ -148,8 +148,8 @@ client.on('interactionCreate', async (interaction) => {
         //   value: targetMessage.content.substring(0, 1024),
         // },
         {
-          // name: `Translated (${languageCodes[targetLang] || targetLang})`,
-          name: translatedText.substring(0, 1024),
+          name: `Translated (${languageCodes[targetLang] || targetLang})`,
+          value: translatedText.substring(0, 1024),
         }
       )
       // .setFooter({ text: `Requested by ${interaction.user.tag}` })
@@ -235,8 +235,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
         //   value: message.content.substring(0, 1024),
         // },
         {
-          // name: `Translated (${languageCodes[targetLang] || targetLang})`,
-          name: translatedText.substring(0, 1024),
+          name: `Translated (${languageCodes[targetLang] || targetLang})`,
+          value: translatedText.substring(0, 1024),
         }
       )
       // .setFooter({ text: `Requested by ${user.tag}` })
@@ -287,8 +287,8 @@ client.on('messageCreate', async (message) => {
           //   value: textToTranslate,
           // },
           {
-            // name: `Translated (${languageCodes[targetLang] || targetLang})`,
-            name: translatedText,
+            name: `Translated (${languageCodes[targetLang] || targetLang})`,
+            value: translatedText,
           }
         )
         // .setFooter({ text: `Requested by ${message.author.tag}` })
